@@ -1,0 +1,86 @@
+package pages
+
+import "github.com/patrickambrosso/nexus-elysium/models"
+
+templ SOPReader(sop models.SOPDocument) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Nexus Elysium PDF Reader</title>
+			<link rel="icon" type="image/png" href="/assets/icons/pdf.png"/>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<script src="/assets/pdfjs/webviewer.min.js"></script>
+			<link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet"/>
+		</head>
+		<body class="h-screen flex flex-col font-sans bg-gray-800">
+			<div class="flex flex-col md:flex-row justify-between items-start md:items-center p-3 bg-gray-900">
+				<div class="flex flex-col w-full">
+					<h4 id="title" class="text-white text-md font-semibold leading-tight mb-1 truncate">
+						{ sop.SOPNumber }-{ sop.SOPVersion } - { sop.SOPTitle }
+					</h4>
+					<h6
+						id="subtitle"
+						class="text-white font-semibold text-sm leading-tight text-gray-700 dark:text-gray-400 truncate"
+					>
+						SOP from { sop.SOPDept } Department | Effective on { sop.EffectiveDate } | Next Review on { sop.NextReviewDate }
+					</h6>
+				</div>
+			</div>
+			<div class="flex-grow">
+				<div id="viewer" data-document-url={ sop.DocumentURL } class="h-full"></div>
+			</div>
+			<script type="text/javascript">
+            const viewer = document.getElementById("viewer");
+        WebViewer(
+            {
+                path: "/assets/pdfjs/",
+                licenseKey: "xDkXd5f2JTPxw24EJfin",
+                initialDoc: viewer.getAttribute('data-document-url'),
+            },
+            viewer
+        ).then((instance) => {
+            const { Core, UI } = instance;
+            const { documentViewer } = instance.Core;
+            const Theme = instance.UI.Theme;
+            const Feature = instance.UI.Feature;
+            instance.UI.setTheme(Theme.DARK);
+            instance.UI.disableFeatures([Feature.Print])
+            instance.UI.disableFeatures([Feature.TextSelection])
+            instance.UI.disableFeatures([Feature.Annotations])
+            instance.UI.disableFeatures([Feature.Download])
+            instance.UI.disableFeatures([Feature.Measurement]);
+            instance.UI.disableFeatures([Feature.Annotate]);
+            instance.UI.disableElements([
+                "toolbarGroup-View",
+                "downloadButton",
+                "languageButton",
+                "panToolButton",
+                "selectToolButton",
+                "printButton",
+                "printModal",
+                "annotationGroupButton",
+                "annotationCommentButton",
+                "stickyToolButton",
+                "highlightToolButton",
+                "freeHandToolButton",
+                "freeHandHighlightToolButton",
+                "freeTextToolButton"
+            ]);
+
+            documentViewer.setWatermark({
+                header: {
+                    fontSize: 10,
+                    fontFamily: '\ntimes-new-roman',
+                    color: 'red',
+                    opacity: 30,
+                    center: 'For CSL Internal Reference Only',
+                }
+            });
+        });
+    </script>
+			<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+		</body>
+	</html>
+}

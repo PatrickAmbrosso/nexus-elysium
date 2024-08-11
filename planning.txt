@@ -1,0 +1,16 @@
+The application will be consisting of 4 ot 5 main pages only
+1. Landing Page
+2. References Page
+3. Trainings Page
+4. Extras Page
+
+All other content are dynamically rendered with HTMX on front and api routes on the back.
+
+For the references page, it should be a Table with the following columns
+
+- Document Type (SOP, Specification, STP, GTP, Others if any/applicable)
+- Document Number (CSL-SOP-QA001 and so on as applicable) use whitespace-nowrap only for header
+- Department
+- Category
+
+

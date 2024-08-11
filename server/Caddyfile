@@ -1,0 +1,20 @@
+dev-vignyan.mycaplin.net {
+	# Serve static files from the 'assets' directory
+	handle /assets/* {
+		root * ../
+		file_server
+	}
+
+	handle /public/* {
+		root * ../
+		file_server
+	}
+
+	# Proxy all other requests to the Go application
+	handle {
+		reverse_proxy localhost:4544
+	}
+
+	# Enable HTTPS with custom certificates
+	tls ./cert-and-key/certificate.crt ./cert-and-key/privatekey.pem
+}

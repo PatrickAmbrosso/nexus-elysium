@@ -1,0 +1,11 @@
+# Ignore the TEMPL generated Files
+*_templ.go
+
+# Ignore the Built Binary
+app
+
+# Ignore the Content Directory
+public
+
+# Ignore the Caddy Server
+caddy.exe

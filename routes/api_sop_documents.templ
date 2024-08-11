@@ -1,0 +1,30 @@
+package routes
+
+import (
+	"fmt"
+	"github.com/patrickambrosso/nexus-elysium/models"
+	"strconv"
+)
+
+templ FilteredSOPDocuments(documents map[string]models.SOPDocument) {
+	<h3 class="text-m font-semibold text-gray-500 dark:text-gray-400 sm:text-l mb-4 md:mb-8">Found { strconv.Itoa(len(documents)) } SOP Documents that match the search</h3>
+	if len(documents) > 0 {
+		<div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 text-sm text-left text-gray-500 dark:text-gray-400 pb-6 sm:pb-8">
+			for id, doc := range documents {
+				<div class="relative p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+					<a href={ templ.SafeURL(fmt.Sprintf("/references/sop/%s", id)) }>
+						<h5 class="px-1 py-1">{ doc.SOPDept }</h5>
+						<h5 class="px-1 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							{ doc.SOPNumber }
+						</h5>
+						<p class="px-1 py-1">
+							{ doc.SOPTitle }
+						</p>
+					</a>
+				</div>
+			}
+		</div>
+	} else {
+		<p class="text-gray-500 dark:text-gray-400">No matching SOP documents found.</p>
+	}
+}
